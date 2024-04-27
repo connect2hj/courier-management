@@ -1,0 +1,35 @@
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  password: String
+  createdAt: String
+  updatedAt: String
+}
+input UserInput {
+  id: ID
+  name: String!
+  key: ID!
+  email: String!
+  password: String
+}
+type Query {
+  fetchUserById(id: ID!): User
+  fetchUsers: [User]
+  checkUserExists(email: String!): Boolean
+}
+input LoginInput {
+  email: String!
+  password: String!
+}
+type AuthenticatedUser {
+  id: ID!
+  name: String!
+  token: String!
+  email: String!
+}
+type Mutation {
+  createUser(input: UserInput!): AuthenticatedUser
+  updateUser(input: UserInput!): AuthenticatedUser
+  validateUser(input: LoginInput): AuthenticatedUser
+}
