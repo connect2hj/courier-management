@@ -42,7 +42,7 @@ async function startApolloServer(schema: GraphQLSchema) {
   server.applyMiddleware({
     app,
     cors: {
-      origin: ["https://smartbooks.ink", "http://localhost:3000"],
+      origin: "*",
       credentials: true,
     },
     // By default, apollo-server hosts its GraphQL endpoint at the

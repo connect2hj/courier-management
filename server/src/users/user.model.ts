@@ -13,6 +13,8 @@ const userSchema = new Schema({
   password: String,
   createdAt: String,
   updatedAt: String,
+}, {
+  timestamps: true
 });
 const UserModel = mongoose.model("User", userSchema);
 

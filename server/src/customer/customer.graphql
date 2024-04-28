@@ -1,0 +1,23 @@
+type Customer {
+  id: ID!
+  name: String!
+  phone: String!
+  createdAt: String
+  updatedAt: String
+}
+input CustomerInput {
+  id: ID
+  name: String!
+  phone: String!
+}
+type Query {
+  fetchCustomerById(id: ID!): Customer
+  fetchCustomers: [Customer]
+  checkCustomerExists(phone: String!): Boolean
+}
+
+
+type Mutation {
+  createCustomer(input: CustomerInput!): Customer
+  updateCustomer(input: CustomerInput!): Customer 
+}
