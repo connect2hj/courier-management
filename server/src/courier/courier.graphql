@@ -1,29 +1,27 @@
 type Courier {
-    id: ID!
-    courierDesc: String!
-    courierType: String!
-    destinationAddress: String!
-    returnAddress: String!
-    fkCustID: ID
-    status: String!
-    arrivalDate: String!
-    weight: String!
-    cost: String!
-    createdAt: String
-    updatedAt: String
-   
-
+  id: ID!
+  courierDesc: String!
+  courierType: String!
+  destinationAddress: String!
+  returnAddress: String!
+  fkCustID: ID
+  status: String!
+  arrivalDate: String!
+  courierWeight: String!
+  courierCost: String!
+  createdAt: String
+  updatedAt: String
 }
-input CourierInput{
-    id: String!
-    courierDesc: String!
-    courierType: String!
-    destinationAddress: String!
-    returnAddress: String!
-    status: String!
-    arrivalDate: String!
-    weight: String!
-    cost: String!  
+input CourierInput {
+  id: String!
+  courierDesc: String!
+  courierType: String!
+  destinationAddress: String!
+  returnAddress: String!
+  courierStatus: String!
+  arrivalDate: String!
+  courierWeight: String!
+  courierCost: String!
 }
 
 type Query {

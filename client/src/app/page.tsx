@@ -1,16 +1,16 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import LandingPage from "@/components/LandingPage";
-import AdminLayout from "@/components/AdminLayout";
+import { UserLayout } from "@/components/UserLayout";
+import { Footer } from "@/components/Footer";
 
 export default function Home() {
   return (
     <main>
-      <AdminLayout>
-    
-      <LandingPage/>
-
-      </AdminLayout>
+      <UserLayout>
+        <LandingPage />
+      </UserLayout>
+      <Footer />
     </main>
   );
 }

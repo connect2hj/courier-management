@@ -16,28 +16,13 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/navigation";
 
-interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window?: () => Window;
-}
-
 const drawerWidth = 240;
 const navItems: ReadonlyArray<{ label: string; route: string }> = [
-  { label: "Home", route: "/" },
-  { label: "About", route: "/" },
-  { label: "Admin Login", route: "/login" },
-  { label: "Staff Login", route: "/login" },
-  { label: "Create Contact", route: "/contacts/add" },
-  { label: "Admin Dashboard", route: "/dashboard/admindashboard" },
-  { label: "Sign Up", route: "/sign-up" },
-  { label: "Book here", route: "/courier-details" },
+  { label: "Admin Login", route: "/" },
+  { label: "Staff Login", route: "/" },
 ];
 
-export default function Header(props: Props) {
-  const { window } = props;
+export default function UserHeader() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const router = useRouter();
 
@@ -65,9 +50,6 @@ export default function Header(props: Props) {
       </List>
     </Box>
   );
-
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -105,7 +87,6 @@ export default function Header(props: Props) {
       </AppBar>
       <nav>
         <Drawer
-          container={container}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}

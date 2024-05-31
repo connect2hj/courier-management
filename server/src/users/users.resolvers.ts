@@ -5,6 +5,7 @@ import * as dotenv from "dotenv";
 import * as jwt from "jsonwebtoken";
 import { ObjectId } from "mongodb";
 import { ApolloError } from "apollo-server-express";
+import { RootQuerySelector } from "mongoose";
 
 dotenv.config().parsed;
 export const extractUser = async (userId?: ObjectId) => {
@@ -16,7 +17,6 @@ export const extractUser = async (userId?: ObjectId) => {
       name: t.name,
       email: t.email,
       phone: t.phone,
-      position: t.position,
     };
   } catch (err) {
     throw err;
@@ -72,6 +72,7 @@ module.exports = {
   },
   Mutation: {
     createUser: async (_: any, args: { input: UserInput }) => {
+      console.log('you reached here', args); //Undo Changes Later.....
       try {
         const ifUserExists = await UserModel.findOne({
           email: args.input.email,
@@ -87,10 +88,11 @@ module.exports = {
                 args.input.password,
                 process.env.SECRET_KEY as string
               )
-            : null,
+            :null,
           createdAt: new Date().toISOString(),
         });
         return {
+          id: user._id, 
           token: jwt.sign(
             {
               id: user._id,
@@ -101,11 +103,12 @@ module.exports = {
           ),
           name: user.name,
         };
-      } catch {
-        console.log("Error creating user");
+      } catch(e: any) {
+        console.log("Error creating user", e.message);
       }
     },
     updateUser: async (_: any, args: { input: UserInput }) => {
+      
       try {
         
         const encryptedPassword = CryptoJS.AES.encrypt(
@@ -141,11 +144,12 @@ module.exports = {
     },
 
     validateUser: async (
-      _: any,
+      _: RootQuerySelector<string>,
       args: {
         input: LoginInput;
       }
     ) => {
+      console.log("validate user", args)
       try {
         const user = await UserModel.findOne({ email: args.input.email });
         if (!user) {
@@ -159,15 +163,18 @@ module.exports = {
         if (password !== args.input.password) {
           throw new ApolloError("Password is incorrect");
         }
+        const token = jwt.sign(
+          {
+            id: user._id,
+            email: user.email,
+          },
+          process.env.SECRET_KEY as string,
+          { expiresIn: "1y" }
+        )
+        
+        console.log("token", token)
          return {
-          token: jwt.sign(
-            {
-              id: user._id,
-              email: user.email,
-            },
-            process.env.SECRET_KEY as string,
-            { expiresIn: "1y" }
-          ),
+          token, 
           id: user.id,
           name: user.name,
           email: user.email,

@@ -9,10 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@apollo/client": "^3.10.1",
+    "@apollo/experimental-nextjs-app-support": "^0.10.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
+    "graphql": "^16.8.1",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18"

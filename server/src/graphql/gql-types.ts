@@ -23,30 +23,29 @@ export type AuthenticatedUser = {
 export type Courier = {
   __typename?: 'Courier';
   arrivalDate: Scalars['String'];
-  cost: Scalars['String'];
+  courierCost: Scalars['String'];
   courierDesc: Scalars['String'];
   courierType: Scalars['String'];
+  courierWeight: Scalars['String'];
   createdAt?: Maybe<Scalars['String']>;
-  customer: Customer;
   destinationAddress: Scalars['String'];
   fkCustID?: Maybe<Scalars['ID']>;
   id: Scalars['ID'];
   returnAddress: Scalars['String'];
   status: Scalars['String'];
   updatedAt?: Maybe<Scalars['String']>;
-  weight: Scalars['String'];
 };
 
 export type CourierInput = {
   arrivalDate: Scalars['String'];
-  cost: Scalars['String'];
+  courierCost: Scalars['String'];
   courierDesc: Scalars['String'];
+  courierStatus: Scalars['String'];
   courierType: Scalars['String'];
+  courierWeight: Scalars['String'];
   destinationAddress: Scalars['String'];
   id: Scalars['String'];
   returnAddress: Scalars['String'];
-  status: Scalars['String'];
-  weight: Scalars['String'];
 };
 
 export type Customer = {
@@ -165,13 +164,14 @@ export type User = {
   id: Scalars['ID'];
   name: Scalars['String'];
   password?: Maybe<Scalars['String']>;
+  phone: Scalars['String'];
   updatedAt?: Maybe<Scalars['String']>;
 };
 
 export type UserInput = {
   email: Scalars['String'];
   id?: InputMaybe<Scalars['ID']>;
-  key: Scalars['ID'];
   name: Scalars['String'];
   password?: InputMaybe<Scalars['String']>;
+  phone: Scalars['String'];
 };

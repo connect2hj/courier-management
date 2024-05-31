@@ -2,6 +2,7 @@ type User {
   id: ID!
   name: String!
   email: String!
+  phone: String!
   password: String
   createdAt: String
   updatedAt: String
@@ -9,8 +10,8 @@ type User {
 input UserInput {
   id: ID
   name: String!
-  key: ID!
   email: String!
+  phone: String!
   password: String
 }
 type Query {

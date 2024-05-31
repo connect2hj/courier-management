@@ -67,14 +67,7 @@ module.exports = {
   },
   Mutation: {
     createCustomer: async (_: any, args: { input: CustomerInput }) => {
-      try {
-        const ifcustomerExists = await CustomerModel.findOne({
-          phone: args.input.phone,
-        });
-        if (ifcustomerExists) {
-          throw new Error("customer already exists");
-        }
-       
+      try {  
         const customer = await CustomerModel.create({
           ...args.input,
           createdAt: new Date().toISOString(),
@@ -84,8 +77,8 @@ module.exports = {
           name: customer.name,
           phone: customer.phone
         };
-      } catch {
-        console.log("Error creating customer");
+      } catch(e:any) {
+        console.log("Error creating customer", e.message);
       }
     },
     updateCustomer: async (_: any, args: { input: CustomerInput })=> {
