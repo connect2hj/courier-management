@@ -6,7 +6,6 @@ import ContactUs from "./ContactUs";
 const LandingPage = () => {
   return (
     <Stack sx={{ height: "100vh" }}>
-      <Stack>Courier Management System</Stack>
       <Stack
         sx={{ height: "90%", alignItems: "center", justifyContent: "center" }}
       >

@@ -2,11 +2,10 @@
 import { authVar } from "@/utils/vars";
 import { useReactiveVar } from "@apollo/client";
 import { AuthenticatedUser } from "@gql";
-import { LocalActivity } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const AdminDashboard = () => {
+export const AdminDashboard = () => {
   const router = useRouter();
   const authenticatedUser = useReactiveVar(authVar);
   const user = JSON.parse(
@@ -24,5 +23,3 @@ const AdminDashboard = () => {
     </div>
   );
 };
-
-export default AdminDashboard;
