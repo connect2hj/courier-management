@@ -1,12 +1,11 @@
 "use client";
 import { AdminLayout } from "@/components/AdminLayout";
-import { CourierDetails } from "@/components/CourierDetails";
 import React from "react";
-
+import { AddCourier } from "@/components/AddCourier";
 const Page = () => {
   return (
     <AdminLayout>
-      <CourierDetails />
+      <AddCourier />
     </AdminLayout>
   );
 };

@@ -5,7 +5,7 @@ type Courier {
   destinationAddress: String!
   returnAddress: String!
   fkCustID: ID
-  status: String!
+  courierStatus: String!
   arrivalDate: String!
   courierWeight: String!
   courierCost: String!

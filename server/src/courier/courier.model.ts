@@ -1,3 +1,4 @@
+
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 const courierSchema = new Schema({
@@ -11,16 +12,39 @@ const courierSchema = new Schema({
         type: String,
         require: true
     },
-    senderAddress: String,
-    destinationAddress: String,
-    returnAddress: String,
-    status: String,
+    senderAddress: {
+     type: String,
+     require: true
+    },
+    destinationAddress: {
+        type: String,
+        require: true
+    },
+    returnAddress: {
+        type: String,
+        require: true
+    },
+    status: {
+        type: String,
+        enum:['processing', 'shipped','in-transit',"delivered"],
+        required: true,
+        default: 'processing'
+        },
     arrivalDate: String,
-    weight: String,
-    cost: String,
+    weight: {
+        type: Number,
+        require: true
+        
+    },
+    cost: {
+        type: Number,
+        require: true
+    },
     createdAt: String,
     updatedAt: String,
-});
+},{timestamps: true
+}
+);
 const courierModel = mongoose.model("Courier", courierSchema);
 
 export default courierModel;

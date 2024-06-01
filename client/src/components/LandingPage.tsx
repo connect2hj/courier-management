@@ -1,7 +1,6 @@
 import { SearchOutlined } from "@mui/icons-material";
 import { Button, InputAdornment, Stack, TextField } from "@mui/material";
 import React from "react";
-import ContactUs from "./ContactUs";
 
 const LandingPage = () => {
   return (

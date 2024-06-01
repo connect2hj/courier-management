@@ -1,9 +1,11 @@
 "use client";
-import Page from "@/app/courier-details/page";
+// Predefined Libaries from MUI/ Appollo Client/ GQL/Router
+import { FETCH_COURIERS } from "@/app/couriers/page";
 import { gql, useMutation } from "@apollo/client";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import React from "react";
+
 //Creating AN API....CREATING COURIER DETAILS...
 const CREATE_COURIER = gql`
   mutation createCourier($input: CourierInput!) {
@@ -21,7 +23,7 @@ const CREATE_COURIER = gql`
   }
 `; // End of GQL..
 
-export const CourierDetails = () => {
+export const AddCourier = () => {
   const [form, setForm] = React.useState<{
     courierDesc: string;
     courierType: string;
@@ -46,7 +48,7 @@ export const CourierDetails = () => {
   const [createCourier, { data, error, loading }] = useMutation(
     CREATE_COURIER,
     {
-      onCompleted: () => router.push("/login"),
+      onCompleted: () => router.push("/couriers"),
       onError: (e) => alert(JSON.stringify(e.message)),
     }
   );
@@ -130,18 +132,7 @@ export const CourierDetails = () => {
           value={form.courierStatus}
           onChange={(e) => setForm({ ...form, courierStatus: e.target.value })}
         />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="courierStatus"
-          label="Courier Status "
-          name="courier-status"
-          autoComplete="courier-status"
-          autoFocus
-          value={form.courierStatus}
-          onChange={(e) => setForm({ ...form, courierStatus: e.target.value })}
-        />
+
         <TextField
           margin="normal"
           required
@@ -178,7 +169,21 @@ export const CourierDetails = () => {
           value={form.courierCost}
           onChange={(e) => setForm({ ...form, courierCost: e.target.value })}
         />
-        <Button fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+        <Button
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+          //This Piece of Code will Run when we Hit the Submit button
+          onClick={async () => {
+            await createCourier({
+              variables: {
+                input: form,
+              },
+              refetchQueries: [FETCH_COURIERS],
+            });
+            router.push("/couriers");
+          }}
+        >
           Create
         </Button>
       </Box>

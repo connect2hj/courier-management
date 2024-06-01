@@ -33,7 +33,7 @@ const navItems: ReadonlyArray<{ label: string; route: string }> = [
   { label: "Create Contact", route: "/contacts/add" },
   { label: "Admin Dashboard", route: "/dashboard/admindashboard" },
   { label: "Sign Up", route: "/sign-up" },
-  { label: "Book here", route: "/courier-details" },
+  { label: "Book here", route: "/couriers/booking" },
 ];
 
 export default function Header(props: Props) {
