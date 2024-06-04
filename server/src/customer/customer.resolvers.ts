@@ -1,4 +1,3 @@
-
 import { LoginInput, CustomerInput, Customer } from "../graphql/gql-types";
 import CustomerModel from "./customer.model";
 import CryptoJS from "crypto-js";
@@ -15,7 +14,7 @@ export const extractcustomer = async (customerId?: ObjectId) => {
     return {
       id: t.id,
       name: t.name,
-      phone: t.phone,   
+      phone: t.phone,
     };
   } catch (err) {
     throw err;
@@ -33,12 +32,12 @@ module.exports = {
     },
     fetchCustomerById: async (_: any, args: CustomerInput) => {
       try {
-        const customer= await CustomerModel.findOne({ _id: args.id });
+        const customer = await CustomerModel.findOne({ _id: args.id });
         if (!customer) {
           throw new Error("customer not found");
         }
         return {
-          id:customer.id,
+          id: customer.id,
           name: customer.name,
           phone: customer.phone,
           createdAt: customer.createdAt,
@@ -51,11 +50,11 @@ module.exports = {
     checkCustomerExists: async (
       _: any,
       args: {
-        phone: string;
+        phone: Number;
       }
     ) => {
       try {
-        const customer = await CustomerModel.findOne({ phone: args.phone});
+        const customer = await CustomerModel.findOne({ phone: args.phone });
         if (!customer) {
           return false;
         }
@@ -67,7 +66,7 @@ module.exports = {
   },
   Mutation: {
     createCustomer: async (_: any, args: { input: CustomerInput }) => {
-      try {  
+      try {
         const customer = await CustomerModel.create({
           ...args.input,
           createdAt: new Date().toISOString(),
@@ -75,21 +74,20 @@ module.exports = {
         return {
           id: customer.id,
           name: customer.name,
-          phone: customer.phone
+          phone: customer.phone,
         };
-      } catch(e:any) {
+      } catch (e: any) {
         console.log("Error creating customer", e.message);
       }
     },
-    updateCustomer: async (_: any, args: { input: CustomerInput })=> {
+    updateCustomer: async (_: any, args: { input: CustomerInput }) => {
       try {
-      
         const customer = await CustomerModel.findOneAndUpdate(
           { id: args.input.id },
           {
             ...args.input,
             updatedAt: new Date().toISOString(),
-                      }
+          }
         );
         if (!customer) {
           throw new Error("customer not found");
@@ -103,7 +101,5 @@ module.exports = {
         console.log("Error updating customer", e.message);
       }
     },
-
-    
   },
 };

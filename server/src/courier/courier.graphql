@@ -7,8 +7,8 @@ type Courier {
   fkCustID: ID
   courierStatus: String!
   arrivalDate: String!
-  courierWeight: String!
-  courierCost: String!
+  courierWeight: Number!
+  courierCost: Number!
   createdAt: String
   updatedAt: String
 }
@@ -20,8 +20,8 @@ input CourierInput {
   returnAddress: String!
   courierStatus: String!
   arrivalDate: String!
-  courierWeight: String!
-  courierCost: String!
+  courierWeight: Number!
+  courierCost: Number!
 }
 
 type Query {

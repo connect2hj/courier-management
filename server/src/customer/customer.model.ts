@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 
 const customerSchema = new Schema({
   name: {
-    type: String, 
+    type: String,
     require: true,
   },
   phone: {
-    type: String,
+    type: Number,
     require: true,
   },
   createdAt: String,
