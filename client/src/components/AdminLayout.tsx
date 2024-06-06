@@ -25,3 +25,4 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
     </Stack>
   );
 };
+export default AdminLayout;

@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { AdminLayout } from "./AdminLayout";
 const CREATE_CUSTOMER = gql`
   mutation createCustomer($input: CustomerInput!) {
     createCustomer(input: $input) {

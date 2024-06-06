@@ -1,5 +1,5 @@
 "use client";
-import AdminLayout from "@/components/AdminLayout";
+import { AdminLayout } from "@/components/AdminLayout";
 import { gql, useQuery } from "@apollo/client";
 import { Stack } from "@mui/material";
 import React from "react";
@@ -13,7 +13,7 @@ export const FETCH_CONTACTS = gql`
     }
   }
 `;
-export const page = () => {
+export const Page = () => {
   const fetch = useQuery(FETCH_CONTACTS);
   const contacts = fetch.data?.fetchCustomers || [];
   if (fetch.error) {
@@ -34,5 +34,4 @@ export const page = () => {
     </AdminLayout>
   );
 };
-
-export default page;
+export default Page;

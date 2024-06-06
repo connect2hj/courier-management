@@ -16,8 +16,7 @@ type Query {
   checkCustomerExists(phone: String!): Boolean
 }
 
-
 type Mutation {
   createCustomer(input: CustomerInput!): Customer
-  updateCustomer(input: CustomerInput!): Customer 
+  updateCustomer(input: CustomerInput!): Customer
 }

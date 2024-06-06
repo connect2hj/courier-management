@@ -5,6 +5,7 @@ import * as dotenv from "dotenv";
 import * as jwt from "jsonwebtoken";
 import { ObjectId } from "mongodb";
 import { ApolloError } from "apollo-server-express";
+import { id } from "fp-ts/lib/Refinement";
 
 export const extractCourier = async (Id?: ObjectId) => {
   try {
@@ -68,6 +69,7 @@ module.exports = {
           createdAt: new Date().toISOString(),
         });
         return {
+          id: courier.id,
           courierDesc: courier.courierDesc,
           courierType: courier.courierType,
           destinationAddress: courier.destinationAddress,

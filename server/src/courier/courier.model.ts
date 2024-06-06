@@ -28,11 +28,11 @@ const courierSchema = new Schema(
     },
     arrivalDate: String,
     courierWeight: {
-      type: Number,
+      type: String,
       require: true,
     },
     courierCost: {
-      type: Number,
+      type: String,
       require: true,
     },
     createdAt: String,
