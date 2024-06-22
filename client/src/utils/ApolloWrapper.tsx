@@ -7,6 +7,7 @@ import {
   NextSSRApolloClient,
   SSRMultipartLink,
 } from "@apollo/experimental-nextjs-app-support/ssr";
+import { authVar } from "./vars";
 
 function makeClient() {
   const httpLink = new HttpLink({
@@ -14,7 +15,25 @@ function makeClient() {
   });
 
   return new NextSSRApolloClient({
-    cache: new NextSSRInMemoryCache(),
+    cache: new NextSSRInMemoryCache({
+      typePolicies: {
+        Query: {
+          fields: {
+            authVar: {
+              read() {
+                return authVar;
+              },
+            },
+          },
+        },
+      },
+    }),
+    headers: {
+      authorization:
+        (typeof window !== "undefined" && localStorage.getItem("authToken")) ||
+        "",
+      "Access-Control-Allow-Origin": "*",
+    },
     link:
       typeof window === "undefined"
         ? ApolloLink.from([

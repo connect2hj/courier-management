@@ -23,10 +23,13 @@ const courierSchema = new Schema(
     courierStatus: {
       type: String,
       enum: ["processing", "shipped", "in-transit", "delivered"],
-      required: true,
+      require: true,
       default: "processing",
     },
-    arrivalDate: String,
+    arrivalDate: {
+      type: String,
+      require: true,
+    },
     courierWeight: {
       type: String,
       require: true,

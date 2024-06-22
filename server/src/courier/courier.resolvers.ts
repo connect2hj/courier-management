@@ -1,15 +1,17 @@
 import { CourierInput, Courier } from "../graphql/gql-types";
-import courierModel from "./courier.model";
+import CourierModel from "./courier.model";
 import CryptoJS from "crypto-js";
 import * as dotenv from "dotenv";
 import * as jwt from "jsonwebtoken";
 import { ObjectId } from "mongodb";
 import { ApolloError } from "apollo-server-express";
 import { id } from "fp-ts/lib/Refinement";
+import customerModel from "../customer/customer.model";
 
+dotenv.config().parsed;
 export const extractCourier = async (Id?: ObjectId) => {
   try {
-    const t = await courierModel.findById(Id);
+    const t = await CourierModel.findById(Id);
     if (!t) throw new Error("Courier Not Found");
     return {
       id: t.id,
@@ -26,35 +28,52 @@ export const extractCourier = async (Id?: ObjectId) => {
     throw err;
   }
 };
+const addCourier = (model: InstanceType<typeof CourierModel>): Courier => {
+  return {
+    id: model.id, // predefined
+    courierDesc: model.courierDesc || "", // Returns a Value or Null
+    courierType: model.courierType || "",
+    destinationAddress: model.destinationAddress || "",
+    returnAddress: model.returnAddress || "",
+    courierStatus: model.courierStatus || "", //predefined
+    arrivalDate: model.arrivalDate || "",
+    courierWeight: model.courierWeight || "",
+    courierCost: model.courierCost || "",
+    createdAt: model.createdAt,
+    updatedAt: model.updatedAt,
+  };
+};
+
 module.exports = {
   Query: {
     fetchCouriers: async () => {
       try {
-        const couriers = await courierModel.find();
-        return couriers;
+        const couriers = await CourierModel.find();
+        return couriers.map(addCourier);
       } catch {
         console.log("Couriers Not Found");
       }
     },
     fetchCourierById: async (_: any, args: CourierInput) => {
       try {
-        const courier = await courierModel.findOne({ _id: args.id });
+        const courier = await CourierModel.findOne({ _id: args.id });
         if (!courier) {
           throw new Error("Courier Not Found");
         }
-        return {
-          id: courier.id,
-          courierDesc: courier.courierDesc,
-          courierType: courier.courierType,
-          destinationAddress: courier.destinationAddress,
-          returnAddress: courier.returnAddress,
-          status: courier.courierStatus,
-          arrivaldate: courier.arrivalDate,
-          courierWeight: courier.courierWeight,
-          courierCost: courier.courierCost,
-          createdAt: courier.createdAt,
-          updatedAt: courier.updatedAt,
-        };
+        return addCourier(courier);
+        // return {
+        //   id: courier.id,
+        //   courierDesc: courier.courierDesc,
+        //   courierType: courier.courierType,
+        //   destinationAddress: courier.destinationAddress,
+        //   returnAddress: courier.returnAddress,
+        //   courierStatus: courier.courierStatus,
+        //   arrivaldate: courier.arrivalDate,
+        //   courierWeight: courier.courierWeight,
+        //   courierCost: courier.courierCost,
+        //   createdAt: courier.createdAt,
+        //   updatedAt: courier.updatedAt,
+        // };
       } catch {
         console.log("Error fetching customer");
       }
@@ -63,19 +82,21 @@ module.exports = {
   // CRUD Operations
   Mutation: {
     createCourier: async (_: any, args: { input: CourierInput }) => {
+      console.log("we Reached here", args);
       try {
-        const courier = await courierModel.create({
+        const courier = await CourierModel.create({
           ...args.input,
+
           createdAt: new Date().toISOString(),
         });
+        // return addCourier(courier);
+        // console.log("Courier created");
         return {
-          id: courier.id,
           courierDesc: courier.courierDesc,
           courierType: courier.courierType,
           destinationAddress: courier.destinationAddress,
           returnAddress: courier.returnAddress,
-          courierStatus: courier.courierStatus,
-          arrivaldate: courier.arrivalDate,
+          arrivalDate: courier.arrivalDate,
           courierWeight: courier.courierWeight,
           courierCost: courier.courierCost,
         };
@@ -85,7 +106,7 @@ module.exports = {
     },
     updateCourier: async (_: any, args: { input: CourierInput }) => {
       try {
-        const courier = await courierModel.findOneAndUpdate(
+        const courier = await CourierModel.findOneAndUpdate(
           { id: args.input.id },
           {
             ...args.input,

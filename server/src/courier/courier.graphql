@@ -1,11 +1,11 @@
 type Courier {
-  id: ID!
+  id: ID
   courierDesc: String!
   courierType: String!
   destinationAddress: String!
   returnAddress: String!
   fkCustID: ID
-  courierStatus: String!
+  courierStatus: String
   arrivalDate: String!
   courierWeight: String!
   courierCost: String!
@@ -13,7 +13,7 @@ type Courier {
   updatedAt: String
 }
 input CourierInput {
-  id: String
+  id: ID
   courierDesc: String!
   courierType: String!
   destinationAddress: String!

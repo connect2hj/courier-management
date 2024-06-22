@@ -8,9 +8,8 @@ import React from "react";
 
 //Creating AN API....CREATING COURIER DETAILS...
 const CREATE_COURIER = gql`
-  mutation createCourier($input: CourierInput!) {
+  mutation Mutation($input: CourierInput!) {
     createCourier(input: $input) {
-      id
       courierDesc
       courierType
       destinationAddress

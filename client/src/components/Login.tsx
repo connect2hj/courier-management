@@ -16,7 +16,7 @@ import { gql, useMutation } from "@apollo/client";
 import { useRouter } from "next/navigation";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { AuthenticatedUser, User } from "@gql";
-import { authVar } from "@/utils/vars";
+import { authVar, isLoggedIn } from "@/utils/vars";
 
 //Email and password validation section
 const emailRegex = /[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}/;
@@ -61,6 +61,7 @@ export const SignIn = () => {
           token: token.token,
           email: token.email,
         });
+      isLoggedIn(true);
       router.push("/dashboard/admin-dashboard");
     },
     onError: (e) => alert(e.message),

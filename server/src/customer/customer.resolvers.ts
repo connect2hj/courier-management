@@ -20,29 +20,35 @@ export const extractcustomer = async (customerId?: ObjectId) => {
     throw err;
   }
 };
+const convertContact = (
+  model: InstanceType<typeof CustomerModel>
+): Customer => {
+  return {
+    id: model.id,
+    name: model.name || "",
+    phone: model.phone || "",
+    createdAt: model.createdAt,
+    updatedAt: model.updatedAt,
+  };
+};
 module.exports = {
   Query: {
     fetchCustomers: async () => {
       try {
         const customers = await CustomerModel.find();
-        return customers;
+        return customers.map(convertContact);
       } catch {
         console.log("Error Fetching Customers");
       }
     },
     fetchCustomerById: async (_: any, args: CustomerInput) => {
+      console.log("We Reached Here", args);
       try {
         const customer = await CustomerModel.findOne({ _id: args.id });
         if (!customer) {
           throw new Error("customer not found");
         }
-        return {
-          id: customer.id,
-          name: customer.name,
-          phone: customer.phone,
-          createdAt: customer.createdAt,
-          updatedAt: customer.updatedAt,
-        };
+        return convertContact(customer);
       } catch {
         console.log("Error fetching customer");
       }
@@ -66,6 +72,7 @@ module.exports = {
   },
   Mutation: {
     createCustomer: async (_: any, args: { input: CustomerInput }) => {
+      console.log("we Reached here", args);
       try {
         const customer = await CustomerModel.create({
           ...args.input,

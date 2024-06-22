@@ -15,6 +15,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/navigation";
+import { authVar, isLoggedIn } from "@/utils/vars";
 
 interface Props {
   /**
@@ -28,8 +29,8 @@ const drawerWidth = 240;
 const navItems: ReadonlyArray<{ label: string; route: string }> = [
   { label: "Home", route: "/" },
   { label: "About", route: "/" },
-  { label: "Admin Login", route: "/login" },
-  { label: "Staff Login", route: "/login" },
+  // { label: "Admin Login", route: "/login" },
+  // { label: "Staff Login", route: "/login" },
   { label: "Create Contact", route: "/contacts/add" },
   { label: "Admin Dashboard", route: "/dashboard/admindashboard" },
   { label: "Sign Up", route: "/sign-up" },
@@ -100,6 +101,16 @@ export default function Header(props: Props) {
                 {item.label}
               </Button>
             ))}
+            <Button
+              sx={{ color: "#fff" }}
+              onClick={() => {
+                localStorage.setItem("authToken", "");
+                isLoggedIn(false);
+                router.push("/login");
+              }}
+            >
+              Logout
+            </Button>
           </Box>
         </Toolbar>
       </AppBar>

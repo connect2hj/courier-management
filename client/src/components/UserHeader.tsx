@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 
 const drawerWidth = 240;
 const navItems: ReadonlyArray<{ label: string; route: string }> = [
-  { label: "Admin Login", route: "/" },
+  { label: "Admin Login", route: "/login" },
   { label: "Staff Login", route: "/" },
 ];
 
