@@ -1,11 +1,11 @@
 type Courier {
-  id: ID
+  id: ID!
   courierDesc: String!
   courierType: String!
   destinationAddress: String!
   returnAddress: String!
-  fkCustID: ID
-  courierStatus: String
+  fkCustID: ID!
+  courierStatus: String!
   arrivalDate: String!
   courierWeight: String!
   courierCost: String!
@@ -31,6 +31,6 @@ type Query {
 
 type Mutation {
   createCourier(input: CourierInput!): Courier
-  updateCourier(input: CourierInput!): Courier!
-  deletecourier(id: ID!): Courier!
+  updateCourier(input: CourierInput!): Courier
+  deletecourier(id: ID!): Courier
 }

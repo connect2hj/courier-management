@@ -5,8 +5,6 @@ import * as dotenv from "dotenv";
 import * as jwt from "jsonwebtoken";
 import { ObjectId } from "mongodb";
 import { ApolloError } from "apollo-server-express";
-import { id } from "fp-ts/lib/Refinement";
-import customerModel from "../customer/customer.model";
 
 dotenv.config().parsed;
 export const extractCourier = async (Id?: ObjectId) => {
@@ -86,22 +84,11 @@ module.exports = {
       try {
         const courier = await CourierModel.create({
           ...args.input,
-
           createdAt: new Date().toISOString(),
         });
-        // return addCourier(courier);
-        // console.log("Courier created");
-        return {
-          courierDesc: courier.courierDesc,
-          courierType: courier.courierType,
-          destinationAddress: courier.destinationAddress,
-          returnAddress: courier.returnAddress,
-          arrivalDate: courier.arrivalDate,
-          courierWeight: courier.courierWeight,
-          courierCost: courier.courierCost,
-        };
-      } catch {
-        console.log("Error creating courier");
+        return addCourier(courier);
+      } catch (e: any) {
+        console.log("Error creating courier", e.message);
       }
     },
     updateCourier: async (_: any, args: { input: CourierInput }) => {

@@ -43,6 +43,6 @@ const courierSchema = new Schema(
   },
   { timestamps: true }
 );
-const courierModel = mongoose.model("Courier", courierSchema);
+const courierModel = mongoose.model("courier", courierSchema);
 
 export default courierModel;

@@ -5,3 +5,4 @@ export const authVar = makeVar<AuthenticatedUser | null>(null);
 export const isLoggedIn = makeVar<boolean>(
   typeof window !== "undefined" && !!localStorage.getItem("authToken")
 );
+declare const __DEV__: boolean;

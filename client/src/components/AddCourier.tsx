@@ -1,12 +1,13 @@
 "use client";
-// Predefined Libaries from MUI/ Appollo Client/ GQL/Router
+// Predefined Libraries from MUI/ Apollo Client/ GQL/ Router
 import { FETCH_COURIERS } from "@/app/couriers/page";
 import { gql, useMutation } from "@apollo/client";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 
-//Creating AN API....CREATING COURIER DETAILS...
+// Creating an API....Creating Courier Details...
 const CREATE_COURIER = gql`
   mutation Mutation($input: CourierInput!) {
     createCourier(input: $input) {
@@ -23,34 +24,55 @@ const CREATE_COURIER = gql`
 `; // End of GQL..
 
 export const AddCourier = () => {
-  const [form, setForm] = React.useState<{
-    courierDesc: string;
-    courierType: string;
-    destinationAddress: string;
-    returnAddress: string;
-    courierStatus: string;
-    arrivalDate: string;
-    courierWeight: string;
-    courierCost: string;
-  }>({
+  const [form, setForm] = useState({
     courierDesc: "",
     courierType: "",
     destinationAddress: "",
     returnAddress: "",
-    courierStatus: "",
+    courierStatus: "processing",
     arrivalDate: "",
     courierWeight: "",
     courierCost: "",
   });
-  const router = useRouter();
 
-  const [createCourier, { data, error, loading }] = useMutation(
-    CREATE_COURIER,
-    {
-      onCompleted: () => router.push("/couriers"),
-      onError: (e) => alert(JSON.stringify(e.message)),
+  const router = useRouter();
+  const [createCourier, { data, error, loading }] = useMutation(CREATE_COURIER);
+
+  // Load development messages if in development environment
+  useEffect(() => {
+    const isDev = process.env.NODE_ENV === "development";
+    if (isDev) {
+      loadDevMessages();
+      loadErrorMessages();
     }
-  );
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const result = await createCourier({
+        variables: { input: form },
+        refetchQueries: [FETCH_COURIERS],
+      });
+
+      if (result.data.createCourier) {
+        console.log("Courier created successfully:", result.data.createCourier);
+        router.push("/couriers");
+      } else {
+        console.error("Courier creation failed:", result);
+      }
+    } catch (err) {
+      console.error("Error creating courier:", err);
+    }
+  };
 
   return (
     // Creating Booking Registration form..
@@ -68,123 +90,107 @@ export const AddCourier = () => {
             flexDirection: "column",
             alignItems: "center",
           }}
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="courierDesc"
-          label="Courier Description"
-          name="courier-desc"
-          autoComplete="courier-desc"
-          autoFocus
-          value={form.courierDesc}
-          onChange={(e) => setForm({ ...form, courierDesc: e.target.value })}
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="courierType"
-          label="Courier Type"
-          name="courier-type"
-          autoComplete="courier-type"
-          autoFocus
-          value={form.courierType}
-          onChange={(e) => setForm({ ...form, courierType: e.target.value })}
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="destinationAddress"
-          label="Destination Address "
-          name="destination-address"
-          autoComplete="destination-address"
-          autoFocus
-          value={form.destinationAddress}
-          onChange={(e) =>
-            setForm({ ...form, destinationAddress: e.target.value })
-          }
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="returnAddress"
-          label="Return Address "
-          name="Return-address"
-          autoComplete="return-address"
-          autoFocus
-          value={form.returnAddress}
-          onChange={(e) => setForm({ ...form, returnAddress: e.target.value })}
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="courierStatus"
-          label="Courier Status "
-          name="courier-status"
-          autoComplete="courier-status"
-          autoFocus
-          value={form.courierStatus}
-          onChange={(e) => setForm({ ...form, courierStatus: e.target.value })}
-        />
-
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="arrivalDate"
-          label="Arrival Date "
-          name="Arrival Date"
-          autoComplete="arrrival-date"
-          autoFocus
-          value={form.arrivalDate}
-          onChange={(e) => setForm({ ...form, arrivalDate: e.target.value })}
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="courierWeight"
-          label="Courier Weight "
-          name="courier-weight"
-          autoComplete="courier-weight"
-          autoFocus
-          value={form.courierWeight}
-          onChange={(e) => setForm({ ...form, courierWeight: e.target.value })}
-        />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="courierCost"
-          label="Courier Cost "
-          name="courier-cost"
-          autoComplete="courier-cost"
-          autoFocus
-          value={form.courierCost}
-          onChange={(e) => setForm({ ...form, courierCost: e.target.value })}
-        />
-        <Button
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-          //This Piece of Code will Run when we Hit the Submit button
-          onClick={async () => {
-            await createCourier({
-              variables: {
-                input: form,
-              },
-              refetchQueries: [FETCH_COURIERS],
-            });
-            router.push("/couriers");
-          }}
+          onSubmit={handleSubmit}
         >
-          Create
-        </Button>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="courierDesc"
+            label="Courier Description"
+            name="courierDesc"
+            type="string"
+            autoFocus
+            value={form.courierDesc}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="courierType"
+            label="Courier Type"
+            name="courierType"
+            type="string"
+            value={form.courierType}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="destinationAddress"
+            label="Destination Address"
+            name="destinationAddress"
+            type="string"
+            value={form.destinationAddress}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="returnAddress"
+            label="Return Address"
+            name="returnAddress"
+            type="string"
+            value={form.returnAddress}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="courierStatus"
+            label="Courier Status"
+            name="courierStatus"
+            type="string"
+            value={form.courierStatus}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="arrivalDate"
+            label="Arrival Date"
+            name="arrivalDate"
+            type="string"
+            value={form.arrivalDate}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="courierWeight"
+            label="Courier Weight"
+            name="courierWeight"
+            type="string"
+            value={form.courierWeight}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="courierCost"
+            label="Courier Cost"
+            name="courierCost"
+            type="string"
+            value={form.courierCost}
+            onChange={handleChange}
+          />
+          <Button
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "Booking..." : "Book"}
+          </Button>
+        </Box>
       </Box>
     </Container>
   );
