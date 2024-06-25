@@ -15,11 +15,13 @@ export const extractUser = async (userId?: ObjectId) => {
     return {
       id: t.id,
       name: t.name,
-      email: t.email,
       phone: t.phone,
+      email: t.email,
+      password: t.password,
+      currentPassword: t.currentPassword,
     };
-  } catch (err) {
-    throw err;
+  } catch (err: any) {
+    throw console.log(err.message);
   }
 };
 module.exports = {
@@ -49,8 +51,8 @@ module.exports = {
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
         };
-      } catch {
-        console.log("Error fetching user");
+      } catch (err: any) {
+        console.log("Error fetching user", err.message);
       }
     },
     checkUserExists: async (
@@ -72,7 +74,7 @@ module.exports = {
   },
   Mutation: {
     createUser: async (_: any, args: { input: UserInput }) => {
-      console.log('you reached here', args); //Undo Changes Later.....
+      console.log("you reached here", args); //Undo Changes Later.....
       try {
         const ifUserExists = await UserModel.findOne({
           email: args.input.email,
@@ -80,7 +82,7 @@ module.exports = {
         if (ifUserExists) {
           throw new Error("User already exists");
         }
-       
+
         const user = await UserModel.create({
           ...args.input,
           password: args.input.password
@@ -88,11 +90,11 @@ module.exports = {
                 args.input.password,
                 process.env.SECRET_KEY as string
               )
-            :null,
+            : null,
           createdAt: new Date().toISOString(),
         });
         return {
-          id: user._id, 
+          id: user._id,
           token: jwt.sign(
             {
               id: user._id,
@@ -103,14 +105,12 @@ module.exports = {
           ),
           name: user.name,
         };
-      } catch(e: any) {
+      } catch (e: any) {
         console.log("Error creating user", e.message);
       }
     },
     updateUser: async (_: any, args: { input: UserInput }) => {
-      
       try {
-        
         const encryptedPassword = CryptoJS.AES.encrypt(
           args.input.password as string,
           process.env.SECRET_KEY as string
@@ -121,7 +121,7 @@ module.exports = {
             ...args.input,
             password: encryptedPassword,
             updatedAt: new Date().toISOString(),
-                      }
+          }
         );
         if (!user) {
           throw new Error("User not found");
@@ -149,7 +149,7 @@ module.exports = {
         input: LoginInput;
       }
     ) => {
-      console.log("validate user", args)
+      console.log("validate user", args);
       try {
         const user = await UserModel.findOne({ email: args.input.email });
         if (!user) {
@@ -170,15 +170,14 @@ module.exports = {
           },
           process.env.SECRET_KEY as string,
           { expiresIn: "1y" }
-        )
-        
-        console.log("token", token)
-         return {
-          token, 
+        );
+
+        console.log("token", token);
+        return {
+          token,
           id: user.id,
           name: user.name,
           email: user.email,
-  
         };
       } catch (e) {
         console.log(e);

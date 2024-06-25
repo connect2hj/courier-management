@@ -72,17 +72,13 @@ module.exports = {
   },
   Mutation: {
     createCustomer: async (_: any, args: { input: CustomerInput }) => {
-      console.log("we Reached here", args);
+      console.log("we Reached here", args); // Prints INPUT Parameters on Console...
       try {
         const customer = await CustomerModel.create({
           ...args.input,
           createdAt: new Date().toISOString(),
         });
-        return {
-          id: customer.id,
-          name: customer.name,
-          phone: customer.phone,
-        };
+        return convertContact(customer);
       } catch (e: any) {
         console.log("Error creating customer", e.message);
       }

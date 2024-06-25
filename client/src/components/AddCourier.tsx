@@ -29,7 +29,7 @@ export const AddCourier = () => {
     courierType: "",
     destinationAddress: "",
     returnAddress: "",
-    courierStatus: "processing",
+    courierStatus: "processing", //Default Value....
     arrivalDate: "",
     courierWeight: "",
     courierCost: "",
@@ -64,34 +64,31 @@ export const AddCourier = () => {
       });
 
       if (result.data.createCourier) {
-        console.log("Courier created successfully:", result.data.createCourier);
+        alert("Courier created successfully:");
         router.push("/couriers");
       } else {
         console.error("Courier creation failed:", result);
       }
-    } catch (err) {
-      console.error("Error creating courier:", err);
+    } catch (err: any) {
+      console.error("Error creating courier:", err.message);
     }
   };
 
   return (
     // Creating Booking Registration form..
     <Container component="main" maxWidth="xs">
-      <Box>
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <Typography variant="h4" fontWeight={"semibold"}>
           Courier Details
         </Typography>
-        <Box
-          component="form"
-          noValidate
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-          onSubmit={handleSubmit}
-        >
+        <Box component="form" noValidate onSubmit={handleSubmit}>
           <TextField
             margin="normal"
             required

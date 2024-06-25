@@ -59,19 +59,6 @@ module.exports = {
           throw new Error("Courier Not Found");
         }
         return addCourier(courier);
-        // return {
-        //   id: courier.id,
-        //   courierDesc: courier.courierDesc,
-        //   courierType: courier.courierType,
-        //   destinationAddress: courier.destinationAddress,
-        //   returnAddress: courier.returnAddress,
-        //   courierStatus: courier.courierStatus,
-        //   arrivaldate: courier.arrivalDate,
-        //   courierWeight: courier.courierWeight,
-        //   courierCost: courier.courierCost,
-        //   createdAt: courier.createdAt,
-        //   updatedAt: courier.updatedAt,
-        // };
       } catch {
         console.log("Error fetching customer");
       }
@@ -80,12 +67,12 @@ module.exports = {
   // CRUD Operations
   Mutation: {
     createCourier: async (_: any, args: { input: CourierInput }) => {
-      console.log("we Reached here", args);
       try {
         const courier = await CourierModel.create({
           ...args.input,
           createdAt: new Date().toISOString(),
         });
+        console.log("Courier Created Successfully", args);
         return addCourier(courier);
       } catch (e: any) {
         console.log("Error creating courier", e.message);

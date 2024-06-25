@@ -12,37 +12,38 @@ import {
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState, useEffect } from "react";
+
 const CREATE_USER = gql`
   mutation createUser($input: UserInput!) {
     createUser(input: $input) {
       id
       name
-      token
+      phone
       email
+      password
+      currentPassword
     }
   }
 `;
 
-export const SignUp = () => {
-  const [form, setForm] = React.useState<{
-    name: string;
-    phone: string;
-    email: string;
-    password: string;
-  }>({
+export const Signup = () => {
+  const [form, setForm] = useState({
     name: "",
-    email: "",
     phone: "",
+    email: "",
     password: "",
+    currentPassword: "",
   });
+
   const router = useRouter();
   const [createUser, { data, error, loading }] = useMutation(CREATE_USER, {
     onCompleted: () => router.push("/login"),
     onError: (e) => alert(JSON.stringify(e.message)),
   });
 
-  const disabled = form.name.length < 3 || form.phone.length < 10 || loading;
+  // Validation Onhold....
+  // const disabled = form.name.length < 3  || form.phone.length < 10 || loading;
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -65,6 +66,7 @@ export const SignUp = () => {
             label="Name"
             name="name"
             autoComplete="name"
+            type="string"
             autoFocus
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -86,7 +88,7 @@ export const SignUp = () => {
             fullWidth
             name="phone"
             label="phone"
-            type="phone"
+            type="string"
             id="phone"
             value={form.phone}
             onChange={(e) => setForm({ ...form, phone: e.target.value })}
@@ -99,20 +101,20 @@ export const SignUp = () => {
             fullWidth
             name="password"
             label="password"
-            type="password"
+            type="string"
             id="password"
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
           />
-          {/* /* <TextField //Disabled for few days....
+          <TextField
             margin="normal"
             required
             fullWidth
-            name="password"
+            name="CurrentPassword"
             label="Confirm password"
-            type="password"
-            id="password"
-          /> */}
+            type="string"
+            id="currentPassword"
+          />
 
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -129,7 +131,6 @@ export const SignUp = () => {
                 },
               });
             }}
-            disabled={disabled}
           >
             Register
           </Button>
