@@ -33,7 +33,7 @@ type AuthenticatedUser {
   email: String!
 }
 type Mutation {
-  createUser(input: UserInput!): AuthenticatedUser
-  updateUser(input: UserInput!): AuthenticatedUser
+  createUser(input: UserInput!): User
+  updateUser(input: UserInput!): User
   validateUser(input: LoginInput): AuthenticatedUser
 }

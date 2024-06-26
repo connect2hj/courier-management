@@ -17,8 +17,6 @@ export const extractUser = async (userId?: ObjectId) => {
       name: t.name,
       phone: t.phone,
       email: t.email,
-      password: t.password,
-      currentPassword: t.currentPassword,
     };
   } catch (err: any) {
     throw console.log(err.message);
